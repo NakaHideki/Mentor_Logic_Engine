@@ -267,13 +267,163 @@ from mle.verification import SymPyVerifier
 
 ---
 
-### 📌 次回のタスク
+---
 
-1. **動作確認**: `pytest` を実行してセットアップ完了を確認
-2. **Git初期化**: バージョン管理を開始
-3. **Layer 3（SymPy検証エンジン）の実装開始**
-   - 最もシンプルで独立したレイヤーから始める
-   - 早期の成功体験を得る
+## 2026-02-02 - GitHubリポジトリの接続（進行中）
+
+### � 目標
+- ローカルのGitリポジトリとGitHubを接続
+- 初回プッシュを完了
+
+---
+
+### ✅ 完了したこと
+
+#### 1. GitHubリポジトリの作成
+- **リポジトリURL**: https://github.com/NakaHideki/Mentor_Logic_Engine
+- **設定**: Public、README/ライセンス/gitignoreは追加せず（既にローカルにあるため）
+
+#### 2. リモート接続の設定
+```bash
+git remote add origin https://github.com/NakaHideki/Mentor_Logic_Engine.git
+git branch -M main
+```
+
+---
+
+### ⚠️ 発生中の問題
+
+#### 問題：GitHub認証エラー（403 Forbidden）
+**エラー:**
+```bash
+$ git push -u origin main
+remote: Permission to NakaHideki/Mentor_Logic_Engine.git denied to hidekinakazawa-collab.
+fatal: unable to access 'https://github.com/...': The requested URL returned error: 403
+```
+
+**原因:**
+- GitHubが2021年8月以降、パスワード認証を廃止
+- Personal Access Token または SSH鍵が必要
+
+---
+
+### 🔧 解決方法（選択肢）
+
+#### **方法1: Personal Access Token（推奨・簡単）**
+
+**手順:**
+1. GitHubでトークンを作成
+   - アクセス先: https://github.com/settings/tokens
+   - `Tokens (classic)` → `Generate new token (classic)`
+   - Note: `MLE Development` など
+   - Expiration: `90 days` または `No expiration`
+   - スコープ: `repo` にチェック ✓
+   - `Generate token` をクリック
+   - **⚠️ トークンをコピー（後で見れない！）**
+
+2. プッシュ時に使用
+   ```bash
+   git push -u origin main
+   ```
+   - Username: `NakaHideki`
+   - Password: `<コピーしたトークン>`（パスワードではない）
+
+3. トークンを保存（任意）
+   ```bash
+   # macOSのキーチェーンに保存
+   git config --global credential.helper osxkeychain
+   ```
+   
+   次回からトークン入力不要になる
+
+**メリット:**
+- 5分で完了
+- すぐにプッシュできる
+
+**デメリット:**
+- トークンの有効期限管理が必要
+
+---
+
+#### **方法2: SSH鍵を設定**
+
+**手順:**
+1. SSH鍵を生成
+   ```bash
+   ssh-keygen -t ed25519 -C "your.email@example.com"
+   ```
+
+2. 公開鍵をGitHubに登録
+   - https://github.com/settings/ssh/new
+   - `~/.ssh/id_ed25519.pub` の内容をコピー＆ペースト
+
+3. リモートURLをSSHに変更
+   ```bash
+   git remote set-url origin git@github.com:NakaHideki/Mentor_Logic_Engine.git
+   ```
+
+4. プッシュ
+   ```bash
+   git push -u origin main
+   ```
+
+**メリット:**
+- 一度設定すれば永続的
+- トークン管理不要
+
+**デメリット:**
+- 初回セットアップが少し複雑
+
+---
+
+### 📚 学習した知識
+
+#### Gitのリモート接続
+```bash
+# リモートを追加
+git remote add origin <URL>
+
+# リモート確認
+git remote -v
+
+# リモート削除
+git remote remove origin
+
+# ブランチ名を変更
+git branch -M main
+
+# プッシュ（初回）
+git push -u origin main
+```
+
+#### GitHubの認証方法（2021年以降）
+1. **Personal Access Token** - HTTPSで使用
+2. **SSH鍵** - SSHプロトコルで使用
+3. **GitHub CLI** - `gh auth login`
+
+---
+
+### 📌 次のステップ
+
+1. **Personal Access Token を作成**
+2. **git push を実行してGitHubにアップロード**
+3. **ブラウザでリポジトリを確認**
+4. **以降の開発フロー確立**
+
+---
+
+### 💡 今後のGit作業フロー
+
+```bash
+# 1. コード変更後
+git add .
+
+# 2. コミット
+git commit -m "feat: add something"
+
+# 3. GitHubにプッシュ
+git push
+```
 
 ---
 
