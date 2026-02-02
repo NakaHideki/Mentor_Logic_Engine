@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mle"
+version = "0.1.0"
+description = "Mentor-Logic Engine: AI tutor for statistics learning that debugs thinking, not answers"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Hideki Nakazawa", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+keywords = ["ai", "education", "statistics", "vlm", "reasoning"]
+
+dependencies = [
+    "sympy>=1.12",
+    "python-dotenv>=1.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+perception = [
+    # VLM dependencies will be added later
+    # "transformers>=4.30.0",
+    # "torch>=2.0.0",
+]
+
+reasoning = [
+    # LangGraph and reasoning dependencies
+    # "langgraph>=0.0.1",
+]
+
+all = [
+    "mle[dev,perception,reasoning]",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/mle"
+Repository = "https://github.com/yourusername/mle"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=mle --cov-report=term-missing"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+]
+ignore = []
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
