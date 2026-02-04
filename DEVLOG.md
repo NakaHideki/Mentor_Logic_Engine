@@ -4,6 +4,50 @@
 
 ---
 
+## 2026-02-04 (夕方) - Gemini Vision API 統合 🚀
+
+### 📋 目標
+- 本物のVLM APIとの連携
+- Google Gemini Vision の無料枠を使った実装
+- 実際の画像解析の動作確認
+
+### 🎉 今日の成果
+
+#### ✅ 完了したこと
+1.  **Gemini API セットアップ**
+    - Google AI Studio でAPIキーを取得
+    - `.env` ファイルで環境変数管理
+    - `.gitignore` でAPIキー保護を確認
+2.  **GeminiVLM クラスの実装**
+    - `src/mle/perception/gemini_vlm.py` を作成
+    - `VLM` 抽象クラスを継承
+    - `google-generativeai` SDK を使用
+    - `Pillow` で画像処理
+3.  **動作確認**
+    - テスト用の数式画像を生成（`x^2 + 2x + 1 = 0`）
+    - `scripts/test_gemini.py` で実際にAPI呼び出し
+    - LaTeX形式で正しく出力されることを確認 ✅
+4.  **依存関係の追加**
+    - `google-generativeai>=0.3.0`
+    - `pillow>=10.0.0`
+
+#### 📚 学んだこと
+- **抽象クラスの意義**: なぜインターフェースを定義するのか
+- **APIクライアント設計**: 環境変数でAPIキーを管理
+- **tests/ と scripts/ の違い**: 自動テスト vs 手動実行
+- **Pythonパッケージシステム**: `pip install -e` と `pyproject.toml`
+- **Dockerビルドのタイミング**: 依存関係変更時のみ
+
+#### 🔧 設計パターン
+```python
+VLM (抽象クラス)
+ ├── MockVLM (テスト用)
+ └── GeminiVLM (本番用)
+```
+同じインターフェースで複数の実装を切り替え可能に。
+
+---
+
 ## 2026-02-04 (午後) - Layer 1: Perception 基礎実装 ✅
 
 ### 📋 目標
