@@ -5,6 +5,6 @@ Layer 1: Perception (Vision OCR)
 使用モデル: Qwen3-VL-8B
 """
 
-from .vlm import VLMEngine
+from .vlm import VLM, MockVLM
 
-__all__ = ["VLMEngine"]
+__all__ = ["VLM", "MockVLM"]
