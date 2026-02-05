@@ -4,6 +4,70 @@
 
 ---
 
+## 2026-02-05 - 複数PC間での開発環境セットアップ 🔄
+
+### 📋 目標
+- 他のPCでもプロジェクト作業を継続できるようにする
+- Git push/pullによる変更の同期
+- SSH鍵認証のトラブルシューティング
+
+### 🎉 今日の成果
+
+#### ✅ 完了したこと
+1. **変更をGitHubにプッシュ**
+   - `git status` で変更ファイルを確認
+   - `src/mle/perception/gemini_vlm.py` (変更)
+   - `src/mle/perception/qwen_vlm.py` (新規)
+   - コミットメッセージ: "Add VLM implementations (Gemini and Qwen)"
+   - `git push origin main` でリモートリポジトリに反映成功
+
+2. **他のPCでのセットアップ**
+   - 初回クローン時に `fatal: repository does not exist` エラー
+   - **原因**: SSH鍵が未設定
+   - **解決方法**:
+     ```bash
+     # 1. SSH鍵の生成
+     ssh-keygen -t ed25519 -C "your_email@example.com"
+     
+     # 2. 公開鍵を確認
+     cat ~/.ssh/id_ed25519.pub
+     
+     # 3. GitHubに公開鍵を登録
+     # Settings → SSH and GPG keys → New SSH key
+     
+     # 4. SSH接続テスト
+     ssh -T git@github.com
+     
+     # 5. リポジトリをクローン
+     git clone git@github.com:NakaHideki/Mentor_Logic_Engine.git
+     ```
+   - セットアップ成功 ✅
+
+#### 📚 学んだこと
+- **Git リモート確認**: `git remote -v` でリポジトリURLを確認
+- **SSH vs HTTPS**: 
+  - SSH: `git@github.com:user/repo.git` (鍵認証)
+  - HTTPS: `https://github.com/user/repo.git` (パスワード/トークン)
+- **エラーメッセージの読み方**: "repository does not exist" は認証問題の可能性
+- **SSH鍵の仕組み**: 公開鍵をGitHubに登録、秘密鍵で認証
+
+#### 🔧 複数PC間の開発フロー（再確認）
+```bash
+# PC1 (作業終了時)
+git add .
+git commit -m "作業内容"
+git push origin main
+
+# PC2 (作業開始時)
+git pull origin main  # 最新を取得
+# 作業...
+git add .
+git commit -m "作業内容"
+git push origin main
+```
+
+---
+
 ## 2026-02-04 (夕方) - Gemini Vision API 統合 🚀
 
 ### 📋 目標
