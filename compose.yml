@@ -3,4 +3,8 @@ services:
     build: .
     volumes:
       - .:/app
+    env_file:
+      - .env
+    ports:
+      - "0.0.0.0:8501:8501"
     command: tail -f /dev/null

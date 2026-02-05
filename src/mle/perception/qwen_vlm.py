@@ -16,10 +16,11 @@ class QwenVLM(VLM):
             model_name: 使用するQwenモデル名（デフォルト: qwen3-vl）
         """
         self.model_name = model_name
+        self.client = ollama.Client(host='http://host.docker.internal:11434')
         
         # モデルの存在確認
         try:
-            ollama.show(model_name)
+            self.client.show(model_name)
         except Exception as e:
             raise ValueError(
                 f"モデル '{model_name}' が見つかりません。"
@@ -53,7 +54,7 @@ class QwenVLM(VLM):
         
         # 4. Ollamaにリクエストを送信
         try:
-            response = ollama.chat(
+            response = self.client.chat(
                 model=self.model_name,
                 messages=[
                     {
