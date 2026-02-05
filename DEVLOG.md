@@ -4,6 +4,87 @@
 
 ---
 
+## 2026-02-05 (夜) - Qwen VLM ローカル実装完了 🎉
+
+### 📋 目標
+- Qwen3-VLをollamaでローカル動作させる
+- VLM抽象クラスに従った実装
+- ユニットテストの作成と実行
+
+### 🎉 今日の成果
+
+#### ✅ 完了したこと
+1. **Qwen VLM実装**
+   - `src/mle/perception/qwen_vlm.py` を作成
+   - ollama SDK経由でqwen3-vlモデルを使用
+   - VLM抽象クラスを継承した実装
+   - 画像をバイナリデータとして読み込み、ollamaに送信
+   - エラーハンドリング（モデル存在確認、画像検証）
+
+2. **依存関係の追加**
+   - `pyproject.toml` に `ollama>=0.4.0` を追加
+   - `pip install -e ".[dev]"` で再インストール成功
+
+3. **モジュールのエクスポート**
+   - `src/mle/perception/__init__.py` に `QwenVLM` を追加
+   - `from mle.perception import QwenVLM` が可能に
+
+4. **ユニットテスト作成**
+   - `tests/test_perception/test_qwen_vlm.py` を作成
+   - 3つのテスト全て成功（3/3 PASSED）
+   - コードカバレッジ: 56%
+   - テスト内容：
+     - モデル初期化テスト
+     - 無効なモデル名でのエラーテスト
+     - 存在しないファイルでのエラーテスト
+
+#### 📚 学んだこと
+- **ollama SDKの使い方**: `ollama.chat()` でローカルモデルと連携
+- **画像の渡し方**: バイナリデータ（`image_bytes`）として送信
+  ```python
+  with open(image_path, "rb") as f:
+      image_bytes = f.read()
+  ```
+- **エラーハンドリング**: 
+  - `ollama.show()` でモデル存在確認
+  - `PIL.Image.verify()` で画像の検証
+- **pytestの基本**: 
+  - `pytest.raises()` で例外テスト
+  - `pytest.skip()` で条件付きスキップ
+  - `as e` で例外オブジェクトを取得
+- **TOML構文**: 配列の最後の要素にカンマを付けてはいけない
+- **ユニットテストの役割**: 
+  - 自動バグ検出
+  - リファクタリング時の安心感
+  - ドキュメント代わり
+  - 将来の自分を助ける
+
+#### 🎓 重要な気づき
+- **メンターとしてのAIの役割**を再確認
+  - 答えを出さず、考え方を教える
+  - スケルトンコードを提供し、実装はユーザーが行う
+  - レビューとフィードバックを重視
+  - 「どうしても」の時だけ例外的に修正
+
+#### 🔧 トラブルシューティング
+1. **TOML構文エラー**: 
+   - エラー: `tomllib.TOMLDecodeError: Invalid value (at line 23, column 5)`
+   - 原因: 配列の最後の要素に `,` があった
+   - 解決: カンマを削除
+
+2. **変数未定義エラー**: 
+   - エラー: `except ValueError:` の後で `{e}` を使用
+   - 原因: `as e` を忘れていた
+   - 解決: `except ValueError as e:` に修正
+
+3. **pytest構文エラー**: 
+   - エラー: `with pytest.raises(ValueError) as e` の後でエラー
+   - 原因: コロン `:` を忘れていた
+   - 解決: `with pytest.raises(ValueError) as e:` に修正
+
+---
+
+
 ## 2026-02-05 - 複数PC間での開発環境セットアップ 🔄
 
 ### 📋 目標

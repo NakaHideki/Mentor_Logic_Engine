@@ -6,5 +6,7 @@ Layer 1: Perception (Vision OCR)
 """
 
 from .vlm import VLM, MockVLM
+from .gemini_vlm import GeminiVLM
+from .qwen_vlm import QwenVLM
 
-__all__ = ["VLM", "MockVLM"]
+__all__ = ["VLM", "MockVLM", "GeminiVLM", "QwenVLM"]

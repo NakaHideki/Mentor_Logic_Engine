@@ -14,3 +14,11 @@ def test_mock_vlm():
     expected = r"\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}"
 
     assert result == expected
+
+def test_qwen_vlm_predict_file_not_found():
+    try:
+        vlm = QwenVLM()  # ← 変数に代入
+        with pytest.raises(FileNotFoundError) as e:
+            vlm.predict("nonexistent_image.jpg")
+    except ValueError:
+        pytest.skip("qwen3-vlモデルが未インストール")
