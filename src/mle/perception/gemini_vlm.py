@@ -44,4 +44,3 @@ class GeminiVLM(VLM):
 
         #4.結果を返す
         return response.text
-
